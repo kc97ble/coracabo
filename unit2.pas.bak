@@ -1,0 +1,128 @@
+unit Unit2;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
+  StdCtrls, ExtCtrls, process;
+
+type
+
+  TJob = record
+    Command: String;
+    ExitCode: Integer;
+    Finished: Boolean;
+    StdOutText: String;
+    StdErrText: String;
+  end;
+
+  { TForm2 }
+
+  TForm2 = class(TForm)
+    Label1: TLabel;
+    ListBox1: TListBox;
+    PageControl1: TPageControl;
+    ProgressBar1: TProgressBar;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+
+  public
+    Jobs: array of TJob;
+    procedure UpdateView;
+    procedure StartExecute(Data: PtrInt);
+    procedure Execute;
+    procedure ClearJobs;
+    procedure AddJob(Command: String);
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.lfm}
+
+{ TForm2 }
+
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+
+end;
+
+procedure TForm2.FormDestroy(Sender: TObject);
+begin
+
+end;
+
+procedure TForm2.FormShow(Sender: TObject);
+begin
+  Application.QueueAsyncCall(@StartExecute, 0);
+end;
+
+procedure TForm2.UpdateView;
+var
+  J: TJob;
+  CountFinished: Integer = 0;
+begin
+  with ListBox1.Items do
+  begin
+    BeginUpdate;
+    Clear;
+    for J in Jobs do
+    Add(Format('ExitCode=%d, Command="%s", Finished=%d',
+      [J.ExitCode, J.Command, Integer(J.Finished)]));
+    if J.Finished then
+      CountFinished += 1;
+    EndUpdate;
+  end;
+  with ProgressBar1 do
+  begin
+    Min := 0;
+    Max := Length(Jobs);
+    Position:=CountFinished;
+  end;
+end;
+
+procedure TForm2.StartExecute(Data: PtrInt);
+begin
+  Execute;
+end;
+
+procedure TForm2.Execute;
+var
+  i: Integer;
+begin
+  UpdateView;
+  for i := 0 to Length(Jobs)-1 do
+  begin
+    Jobs[i].ExitCode := ExecuteProcess('/bin/sh', ['-c', Jobs[i].Command]);
+    Jobs[i].Finished := True;
+    UpdateView;
+  end;
+end;
+
+procedure TForm2.ClearJobs;
+begin
+  SetLength(Jobs, 0);
+end;
+
+procedure TForm2.AddJob(Command: String);
+begin
+  SetLength(Jobs, Length(Jobs)+1);
+  Jobs[Length(Jobs)-1].Command := Command;
+end;
+
+initialization
+  Form2 := TForm2.Create(nil);
+
+finalization
+  Form2.Free;
+
+end.
+
