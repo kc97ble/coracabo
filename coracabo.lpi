@@ -41,32 +41,31 @@
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="mainformunit.pas"/>
+        <Filename Value="units/stringlisteditorunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="MainForm"/>
+        <ComponentName Value="StringListEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="MainFormUnit"/>
       </Unit1>
       <Unit2>
-        <Filename Value="execformunit.pas"/>
+        <Filename Value="units/confunit.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="units/execformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ExecForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExecFormUnit"/>
-      </Unit2>
-      <Unit3>
-        <Filename Value="confunit.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="ConfUnit"/>
       </Unit3>
       <Unit4>
-        <Filename Value="stringlisteditorunit.pas"/>
+        <Filename Value="units/mainformunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="StringListEditor"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="StringListEditorUnit"/>
+        <UnitName Value="MainFormUnit"/>
       </Unit4>
     </Units>
   </ProjectOptions>
@@ -77,6 +76,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="units"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

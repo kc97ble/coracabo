@@ -1,4 +1,5 @@
 /coracabo
 /lib/
+.fuse_hidden*
 *.exe
 *.bak

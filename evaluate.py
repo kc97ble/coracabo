@@ -25,7 +25,7 @@ def execute(args, tl=1.0, tl2=0.1, ifn=None, ofn=None, efn=None):
 	"""
 	with open(ifn, 'r') as ifd, open(ofn, 'w') as ofd, open(efn, 'w') as efd:
 		process = subprocess.Popen(args, stdin=ifd,
-			stdout=ofd, stderr=efd, shell=True)
+			stdout=ofd, stderr=efd)
 		thread = threading.Thread(target=process.communicate)
 		thread.start()
 		execution_info['start_time'] = time.time()

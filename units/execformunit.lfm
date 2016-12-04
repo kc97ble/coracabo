@@ -13,38 +13,30 @@ object ExecForm: TExecForm
   OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '1.6.0.4'
-  object ProgressBar1: TProgressBar
-    Left = 0
-    Height = 20
-    Top = 5
-    Width = 320
-    Align = alTop
-    Smooth = True
-    TabOrder = 0
-  end
   object PageControl1: TPageControl
     Left = 0
-    Height = 285
-    Top = 30
+    Height = 272
+    Top = 43
     Width = 320
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
-    TabIndex = 0
-    TabOrder = 1
+    TabIndex = 1
+    TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Overview'
       ChildSizing.TopBottomSpacing = 5
       ChildSizing.VerticalSpacing = 5
-      ClientHeight = 246
+      ClientHeight = 233
       ClientWidth = 312
       object OListBox: TListBox
         Left = 0
-        Height = 236
+        Height = 223
         Top = 5
         Width = 312
         Align = alClient
         ItemHeight = 0
         OnDblClick = OListBoxDblClick
+        OnKeyDown = OListBoxKeyDown
         ScrollWidth = 310
         TabOrder = 0
         TopIndex = -1
@@ -54,11 +46,11 @@ object ExecForm: TExecForm
       Caption = 'Details'
       ChildSizing.TopBottomSpacing = 5
       ChildSizing.VerticalSpacing = 5
-      ClientHeight = 246
+      ClientHeight = 233
       ClientWidth = 312
       inline DMemo: TSynEdit
         Left = 0
-        Height = 198
+        Height = 185
         Top = 43
         Width = 312
         Align = alClient
@@ -584,7 +576,6 @@ object ExecForm: TExecForm
           Align = alLeft
           BorderSpacing.Left = 5
           BorderSpacing.Right = 5
-          MaxValue = 9999
           OnChange = DEditChange
           TabOrder = 0
         end
@@ -600,7 +591,57 @@ object ExecForm: TExecForm
           ParentColor = False
           ParentFont = False
         end
+        object SpinEdit1: TSpinEdit
+          Left = 262
+          Height = 33
+          Top = 0
+          Width = 50
+          Align = alRight
+          TabOrder = 1
+        end
       end
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 33
+    Top = 5
+    Width = 320
+    Align = alTop
+    AutoSize = True
+    BevelOuter = bvNone
+    ChildSizing.HorizontalSpacing = 5
+    ClientHeight = 33
+    ClientWidth = 320
+    TabOrder = 1
+    object Button1: TButton
+      Left = 280
+      Height = 33
+      Top = 0
+      Width = 40
+      Align = alRight
+      AutoSize = True
+      Caption = 'Kill'
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 225
+      Height = 33
+      Top = 0
+      Width = 50
+      Align = alRight
+      AutoSize = True
+      Caption = 'Stop'
+      TabOrder = 1
+    end
+    object ProgressBar1: TProgressBar
+      Left = 0
+      Height = 33
+      Top = 0
+      Width = 220
+      Align = alClient
+      Smooth = True
+      TabOrder = 2
     end
   end
   object SynAnySyn1: TSynAnySyn

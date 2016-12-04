@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, SynEdit, SynHighlighterAny, Forms, Controls,
-  Graphics, Dialogs, ComCtrls, StdCtrls, ExtCtrls, Spin, process, math;
+  Graphics, Dialogs, ComCtrls, StdCtrls, ExtCtrls, Spin, process, math,
+  LCLType;
 
 type
 
@@ -23,14 +24,18 @@ type
   { TExecForm }
 
   TExecForm = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
     DLabel: TLabel;
     DLabel2: TLabel;
     OListBox: TListBox;
     PageControl1: TPageControl;
     Panel1: TPanel;
+    Panel2: TPanel;
     ProgressBar1: TProgressBar;
     DEdit: TSpinEdit;
     DMemo: TSynEdit;
+    SpinEdit1: TSpinEdit;
     SynAnySyn1: TSynAnySyn;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -39,6 +44,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure OListBoxDblClick(Sender: TObject);
+    procedure OListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
+      );
   private
     procedure UpdateDetails(UpdateNow: Boolean);
     procedure UpdateOverview(UpdateNow: Boolean);
@@ -80,6 +87,7 @@ end;
 
 procedure TExecForm.DEditChange(Sender: TObject);
 begin
+//  DEdit.Value := EnsureRange(DEdit.Value, DEdit.MinValue, DEdit.MaxValue);
   UpdateDetails(True);
 end;
 
@@ -98,6 +106,13 @@ begin
   if OListBox.ItemIndex = -1 then exit;
   DEdit.Value := OListBox.ItemIndex;
   PageControl1.TabIndex:=TabSheet2.TabIndex;
+end;
+
+procedure TExecForm.OListBoxKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+    OListBoxDblClick(Sender);
 end;
 
 function _Decorate(const S: String; N: Integer): String;
@@ -196,7 +211,9 @@ begin
   else
     PageControl1.TabIndex:=TabSheet1.TabIndex;
 
+  DEdit.MinValue:=0;
   DEdit.MaxValue:=Length(Jobs)-1;
+
   UpdateView(True);
   for i := 0 to Length(Jobs)-1 do
   begin
@@ -209,10 +226,13 @@ begin
       Jobs[i].StdOutText += T0;
       T1[0] := Char(P.Stderr.Read(T1[1], Min(192, P.Stderr.NumBytesAvailable)));
       Jobs[i].StdErrText += T1;
-      if (T0='') and (T1='') and not P.Running then
-        Break;
-      UpdateView(True);
-      Sleep(50);
+      if (T0='') and (T1='') then
+        if not P.Running then
+          Break
+        else begin
+          UpdateView(True);
+          Sleep(100);
+        end;
     until False;
 
     Jobs[i].ExitCode := P.ExitCode;
